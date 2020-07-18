@@ -1,0 +1,13 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+
+use Cwd qw(abs_path);
+use FindBin;
+use lib abs_path("$FindBin::Bin/");
+use Doxygen::Lua;
+
+my $input = $ARGV[0];
+my $p = Doxygen::Lua->new;
+print $p->parse($input);
