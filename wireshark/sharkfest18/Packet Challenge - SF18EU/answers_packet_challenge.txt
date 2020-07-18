@@ -1,0 +1,54 @@
+Challenge 1
+
+1. 216.115.208.230; 216.115.214.177
+# [tcp.hdr_len <28 && tcp.flags.syn == 1]
+2. 17
+# [http.response.code > 299 and http.response.code < 400]
+3. 2
+# [http.time > 0.500]
+4. frame number 6161
+# [http.request.method == "POST"]
+5. frame number 3647, 8456, 8735, 8762; 3650 response retransmission
+# [dns.retransmission]
+
+Challenge 2
+
+6. 0.011237000 sec
+# [ dns.time <= 0.012]
+7. 0 - no TCP conversation
+# [dns.resp.name == "nflnetwork.calreply.net"; 52.8.88.18, 13.57.138.59 # ]
+8. No it was not. Capture Properties shows us that 103 (2%) get dropped
+9. chartbeat.js
+# [http.host == "static.chartbeat.com"]
+10. Thu, 04 Oct 2018 02:34:22 GMT
+# tcp.stream == 59 + Http - OK 200 Last modified date
+
+Challenge 3
+
+11. 262 - (dns.qry.type == 28) && (dns.flags.response == 1)  || dns.aaaa count 26
+
+12. ws12.gti.mcafee.akadns.net + 216.115.214.177
+# [(ssl.handshake.type == 2) && (ssl.handshake.version == 0x0301)]
+
+13. dns.a == 192.168.1.70 => DESKTOP-0N572OG.local
+
+14. ports: 80, 443, 8200
+
+Challenge 4 
+
+15. 1 tcp.stream == 37
+
+16. 1818
+
+17. 183 
+# [icmp.code == 0 and ip.src_host == 192.168.1.25]
+
+18. tcp.stream == 899
+
+19. 290
+
+20. over 20 min (1228 sec)
+
+http://files.packettrain.net:8001/SF18/
+
+login = password = sf18eu

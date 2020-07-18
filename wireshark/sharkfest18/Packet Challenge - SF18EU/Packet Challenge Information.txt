@@ -1,0 +1,14 @@
+Packet Challenge
+Written by Laura Chappell (Founder, Wireshark University)
+laura@chappellu.com
+Written for SharkFest'18 Europe
+
+Step 1: Pick up the Packet Challenge Question document at the Wireshark University table.
+
+Step 2: Fill in your answers on the back side of the Packet Challenge Question document using the trace files contained in this directory.
+
+Step 3: Turn in your Packet Challenge in to the Wireshark University table no later than Thursday, 1 November at 8pm. 
+
+Awards will be presented during the closing ceremony. 
+
+Good luck!

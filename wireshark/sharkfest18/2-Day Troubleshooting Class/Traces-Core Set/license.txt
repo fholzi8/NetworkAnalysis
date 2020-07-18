@@ -1,0 +1,8 @@
+Contents Copyright Protocol Analysis Institute (dba Chappell University and Wireshark University)
+
+You agree to indemnify and hold Protocol Analysis Institute and its subsidiaries, affiliates, officers, agents, employees, partners and licensors harmless from any claim or demand, including reasonable attorneys' fees, made by any third party due to or arising out of your use of the included trace files, your violation of the TOS, or your violation of any rights of another. 
+
+NO COMMERCIAL REUSE
+You may not reproduce, duplicate, copy, sell, trade, resell or exploit for any commercial purposes, any of the trace files, videos, Wireshark profiles or other copyrighted materials distributed as course supplements. 
+
+info@chappellU.com

@@ -1,0 +1,190 @@
+TCP Windows Tuning
+
+
+PS C:\Users\fholz> netsh int tcp show global
+Der aktive Status wird abgefragt...
+
+Globale TCP-Parameter
+----------------------------------------------
+Zustand der empfangsseitigen Skalierung          : enabled
+Autom. Abstimmungsgrad Empfangsfenster    : normal
+Add-On "Überlastungssteuerungsanbieter"  : default
+ECN-Funktion                      : disabled
+RFC 1323-Zeitstempel                 : disabled
+RTO (anfänglich)                         : 3000
+Zustand der Empfangssegmentzusammenfügung    : enabled
+Nicht-SACK-RTT-Widerstandsfähigkeit             : disabled
+Maximale SYN-Neuübertragungen             : 2
+Fast Open                           : enabled
+Fast Open-Fallback                  : enabled
+Geschwindigkeitsprofil                      : off
+
+
+PS C:\Users\fholz> netsh int tcp set global /?
+
+Syntax: set global [[rss=]disabled|enabled|default]
+             [[autotuninglevel=]
+                disabled|highlyrestricted|restricted|normal|experimental]
+             [[congestionprovider=]none|ctcp|default]
+             [[ecncapability=]disabled|enabled|default]
+             [[timestamps=]disabled|enabled|default]
+             [[initialrto=]<300-3000>]
+             [[rsc=]disabled|enabled|default]
+             [[nonsackrttresiliency=]disabled|enabled|default]
+             [[maxsynretransmissions=]<2-8>]
+             [[fastopen=]disabled|enabled|default]
+             [[fastopenfallback=]disabled|enabled|default]
+             [[pacingprofile=]off|initialwindow|slowstart|always|default]
+
+Parameter:
+
+    Markierung           Wert
+    rss             - Einer der folgenden Werte:
+                      disabled: Die empfangsseitige Skalierung wird deaktiviert.
+                      enabled: Die empfangsseitige Skalierung wird aktiviert.
+                      Standardwert: Der Zustand der empfangsseitigen Skalierung wird auf den
+                          Systemstandard zurückgesetzt.
+    autotuninglevel - Einer der folgenden Werte:
+                      disabled: Das Empfangsfenster wird auf den
+                          Standardwert festgelegt.
+                      highlyrestricted: Lässt zu, dass die Empfangsfenstergröße
+                          über den Standardwert hinausgehen kann, aber nur
+                          sehr eingeschränkt.
+                      restricted: Lässt zu, dass die Empfangsfenstergröße
+                          über den Standardwert hinausgehen kann, aber die
+                          Vergrößerung wird in einigen Szenarien eingeschränkt.
+                      normal: Lässt zu, dass das Empfangsfenster vergrößert
+                          und an fast alle Szenarien angepasst werden kann.
+                      experimental: Lässt zu, dass das Empfangsfenster vergrößert
+                          und an extreme Szenarien angepasst werden kann.
+    congestionprovider - Dieser Parameter ist veraltet. Verwenden Sie
+                         stattdessen "netsh int tcp set supplemental".
+    ecncapability   - Aktiviert/deaktiviert die ECN-Funktion.
+                      Standardwert: Der Zustand wird auf den Systemstandard zurückgesetzt.
+    timestamps      - Aktiviert/deaktiviert RFC 1323-Zeitstempel.
+                      Standardwert: Der Zustand wird auf den Systemstandard zurückgesetzt.
+    initialrto      - Neuübertragungszeit (in ms) für die Verbindung (SYN). Standardwert: 3000.
+    rsc             - Aktiviert/deaktiviert die Empfangssegmentzusammenfügung.
+                      Standardwert: Der Zustand wird auf den Systemstandard zurückgesetzt.
+    nonsackrttresiliency - Aktiviert/deaktiviert die RTT-Resilienz für Nicht-SACK-
+                      Clients. Standardwert: disabled.
+    maxsynretransmissions - Wiederholt Verbindungsversuche mit SYN-Paketen.
+                      Standardwert: 2.
+    fastopen        - Aktiviert/deaktiviert TCP Fast Open.
+                      Standardwert: Der Zustand wird auf den Systemstandard zurückgesetzt.
+    fastopenfallback - Aktiviert/deaktiviert TCP Fast Open-Fallbacks.
+                      Standardwert: Der Zustand wird auf den Systemstandard zurückgesetzt.
+    pacingprofile   - Legt die Phasen fest, in denen die Schrittsteuerung aktiviert ist.
+                      Einer der folgenden Werte:
+                      off: Keine Schrittsteuerung.
+                      initialwindow: Schrittsteuerung im anfänglichen Überlastungsfenster.
+                      slowstart: Schrittsteuerung nur während eines langsamen Starts.
+                      always: Immer Schrittsteuerung verwenden.
+                      Standardwert: off.
+
+
+===========================================================================================================   
+PS C:\Users\fholz> netsh int tcp show heuristics
+TCP-Parameter für die Fensterskalierungsheuristik
+----------------------------------------------
+Fensterskalierungsheuristik         : disabled
+Qualifizierende Zielschwelle  : 3
+Profiltyp unknown              : normal
+Profiltyp public               : normal
+Profiltyp private              : normal
+Profiltyp domain               : normal
+
+
+PS C:\Users\fholz> netsh int tcp set heuristics /?
+
+Fensterskalierungsheuristik wird in dieser Version von Windows nicht unterstützt.
+Das Ändern der Einstellungen für die Fensterskalierungsheuristik hat keine Auswirkungen.
+
+Syntax: set heuristics [[wsh=]disabled|enabled|default]
+             [[forcews=]disabled|enabled|default]
+
+Parameter:
+
+       Markierung      Wert
+       wsh    - Diese Einstellung hat keine Auswirkungen.
+       forcews - Einer der folgenden Werte:
+                disabled: Deaktiviert das Erzwingen der Fensterskalierung bei der Neuübertragung.
+                enabled : Aktiviert das Erzwingen der Fensterskalierung bei der Neuübertragung.
+                default : Setzt das Erzwingen der Fensterskalierung wieder auf den Systemstandard
+                             (enabled) zurück.
+
+Hinweise: Legt TCP-Parameter fest, die alle Verbindungen betreffen.
+
+Beispiel:
+
+       set heuristics enabled enabled
+       set heuristics wsh=enabled forcews=enabled
+
+===========================================================================================================       
+PS C:\Users\fholz> netsh int tcp show supplemental
+
+Globale TCP-Standardvorlage: internet
+
+Zusätzliche TCP-Parameter
+----------------------------------------------
+Mindest-RTO (ms)                  : 300
+Anfängliches Überlastungsfenster (MSS)     : 10
+Überlastungssteuerungsanbieter         : cubic
+Neustart des Überlastungsfensters aktivieren    : disabled
+Zeitüberschreitung für verzögerte Bestätigung (ms)          : 40
+Häufigkeit für verzögerte Bestätigung               : 2
+RACK aktivieren                         : enabled
+Tail Loss Probe aktivieren              : enabled
+
+
+PS C:\Users\fholz> netsh int tcp set supplemental /?
+
+Syntax: set supplemental [template=]automatic|datacenter|internet|compat|custom
+         [[minrto=]<ganze Zahl>]
+         [[icw=]<ganze Zahl>]
+         [[congestionprovider=]none|ctcp|dctcp|default]
+         [[enablecwndrestart=]disabled|enabled|default]
+         [[delayedacktimeout=]<ganze Zahl>]
+         [[delayedackfrequency=]<ganze Zahl>]
+         [[rack=]disabled|enabled|default]
+         [[taillossprobe=]disabled|enabled|default]
+
+Parameter:
+
+     Tag                Wert
+     Template             - Einer der folgenden Werte:
+                            custom, datacenter, automatic, compat, internet.
+                            Warnung: Das Ändern der template-Parameter wirkt sich auf alle
+                                     vorherigen Filter für Subnetz/Port aus.
+     minrto               - Steuert die Zeitüberschreitung für TCP-Neuübertragungen. 20 bis 300 ms.
+     icw                  - Steuert das anfängliche Überlastungsfenster. 2 bis 64 MSS.
+     congestionprovider   - Steuert den Überlastungsanbieter.
+     enablecwndrestart    - Steuert, ob das Überlastungsfenster neu gestartet wird.
+     delayedacktimeout    - Steuert die Zeitüberschreitung für die verzögerte TCP-Bestätigung. 10 bis 600 ms.
+     delayedackfrequency  - Steuert die Frequenz für die verzögerte TCP-Bestätigung. 1 bis 255.
+     rack                 - Steuert, ob die auf der RACK-Zeit basierende Wiederherstellung aktiviert ist.
+     taillossprobe        - Steuert, ob Tail Loss Probe aktiviert ist.
+
+Beispiel:
+     netsh int tcp set supplemental custom 20 16 dctcp enabled 10
+
+Hinweise: Wenn nur der template-Parameter angegeben wird, wird die globale
+         TCP-Standardvorlage geändert. Bei Angabe zusätzlicher Parameter
+         wird die angegebene Vorlage
+         geändert.
+         Vergewissern Sie sich beim Ändern von "minrto", dass der Wert von "delayedacktimeout" kleiner als der Wert
+         von "minrto" ist.
+         Es wird empfohlen, "rack" und "taillossprobe" zusammen zu aktivieren,
+         um die Verlustwiederherstellung effizienter auszuführen.
+
+==============================
+My Adjustment
+
+ netsh int tcp set global ecncapability = enabled
+ netsh int tcp set global timestamps = enabled
+
+ netsh int tcp set global rss = enabled
+ netsh int tcp set global initialrto = 2000
+ netsh int tcp set global pacingprofile = initialwindow
+ 
+ netsh int tcp set supplemental internet congestionprovider = ctcp
