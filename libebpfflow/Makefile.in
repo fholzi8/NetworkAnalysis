@@ -1,0 +1,48 @@
+#
+# (C) 2018-19 - ntop.org
+#
+
+###############################################################
+
+HAS_JSON=$(shell pkg-config --exists json-c; echo $$?)
+ifeq ($(HAS_JSON), 0)
+	JSON_INC = $(shell pkg-config --cflags json-c) -DHAVE_JSONC
+	JSON_LIB = $(shell pkg-config --libs json-c)
+endif
+
+###############################################################
+
+HAS_LIBCURL=$(shell pkg-config --exists libcurl; echo $$?)
+ifeq ($(HAS_LIBCURL), 0)
+	LIBCURL_INC = $(shell pkg-config --cflags libcurl) -DHAVE_LIBCURL
+	LIBCURL_LIB = $(shell pkg-config --libs libcurl)
+endif
+
+###############################################################
+
+CFLAGS=-std=c++11 -g -Wall $(JSON_INC) $(LIBCURL_INC)
+LIBS=-lbcc -lzmq $(JSON_LIB) $(LIBCURL_LIB)
+GOROOT=
+
+all: ebpflowexport
+
+container_info.o: container_info.cpp container_info.h
+	g++ -c $(CFLAGS) container_info.cpp -o container_info.o
+
+libebpfflow.a: ebpf_flow.cpp ebpf_flow.h container_info.o ebpflow.ebpf.enc
+	g++ -c $(CFLAGS) ebpf_flow.cpp -o ebpf_flow.o
+	ar rvs $@ ebpf_flow.o container_info.o
+
+ebpflowexport: ebpflowexport.cpp libebpfflow.a Makefile
+	g++ $(CFLAGS) ebpflowexport.cpp -o $@ libebpfflow.a $(LIBS)
+
+ebpflow.ebpf.enc: ebpflow_header.ebpf ebpf_types.h ebpflow_code.ebpf Makefile
+	echo -n "const char * ebpf_code = R\"(" > ebpflow.ebpf.enc
+	cat ebpflow_header.ebpf ebpf_types.h ebpflow_code.ebpf | base64 -w 0  >> ebpflow.ebpf.enc
+	echo ")\";" >> ebpflow.ebpf.enc
+
+go_ebpflowexport: ebpflowexport.go Makefile libebpfflow.a
+	go build -o go_ebpflowexport ebpflowexport.go
+
+clean:
+	/bin/rm -f *~ container_info.a libebpfflow.a *.o ebpflow.ebpf.enc
