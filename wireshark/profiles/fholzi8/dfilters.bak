@@ -1,0 +1,32 @@
+"__________Wireshark Default Display Filters____________________" Register for Jumpstart updates at chappellseminars.com
+"    Ethernet address 00:08:15:00:08:15" eth.addr == 00:08:15:00:08:15
+"    Ethernet type 0x0806 (ARP)" eth.type == 0x0806
+"    Ethernet broadcast" eth.addr == ff:ff:ff:ff:ff:ff
+"    No ARP" not arp
+"    IP only" ip
+"    IP address 192.168.0.1" ip.addr == 192.168.0.1
+"    IP address isn't 192.168.0.1, don't use != for this!" !(ip.addr == 192.168.0.1)
+"    IPX only" ipx
+"    TCP only" tcp
+"    UDP only" udp
+"    UDP port isn't 53 (not DNS), don't use != for this!" !(tcp.port == 53)
+"    TCP or UDP port is 80 (HTTP)" tcp.port == 80 || udp.port == 80
+"    HTTP" http
+"    No ARP and no DNS" not arp and !(udp.port == 53)
+"    Non-HTTP and non-SMTP to/from 192.168.0.1" not (tcp.port == 80) and not (tcp.port == 25) and ip.addr == 192.168.0.1
+"__________Laura's Display Filters____________________" Register for Jumpstart updates at chappellseminars.com
+"    Default IRC TCP Ports 6666-6669 (IRC Traffic - Bot Issue?)" tcp.port == 6666 || tcp.port == 6667 || tcp.port == 6668 || tcp.port == 6669
+"    DHCP NACK (DHCP Server Does Not Like Target)" (bootp.option.type == 53) && (bootp.option.value == 06)
+"    DNS Answers > 5 (Bot IRC List in this Packet?)" dns.count.answers > 5
+"    ICMP Protocol Unreachable (IP Scan Underway?)" icmp.type==3 && icmp.code==2
+"    ICMP Response to TCP Packet (Sender Firewalled?)" (icmp) && (tcp)
+"    ICMP Type 3/Code 4 (Black Hole Detection?)" icmp.type==3 && icmp.code==4
+"    ICMP Types 13, 15 or 17 (OS Fingerprinting?)" icmp.type==13 || icmp.type==15 || icmp.type==17 
+"    Non-Standard ICMP Echo Request (Can You Detect the App?)" icmp.type==8 && !icmp.code==0
+"    PPI Signal < -80 (Weak Signal at Antenna Location)" ppi.80211-common.dbm.antsignal < -80
+"    RadioTap Signal < -80 (Weak Signal at Antenna Location)" radiotap.dbm_antsignal < -80
+"    TCP Handshake Packets (Connection Process/Attempt)" tcp.flags.syn == 1
+"    TCP Length = 536 (MTU Issue Along Path?)" tcp.len==536
+"    TCP Window Size < 1460 (Receiver Stopping Data Xfer?)" tcp.window_size < 1460 && tcp.flags.reset == 0
+"    TCP Zero Window (Receiver Stopping Data Xfer)" (tcp.window_size == 0) && (tcp.flags.reset == 0)
+"My IP Address 106" ip.addr==192.168.0.106
