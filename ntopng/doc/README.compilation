@@ -1,0 +1,72 @@
+Prerequisites for Compilation
+-----------------------------
+
+Prerequisites
+- glib2
+- GNU autotools/libtool
+- libmaxminddb
+- libpcap or PF_RING (optional but recommended)
+- redis (redis server) 2.2 or newer
+- wget (for 'make geoip')
+- libxml2-dev
+- libglib2.0-dev
+- libsqlite3-dev
+- libcurl-dev
+- libmysqlclient-dev
+
+On Ubuntu/Debian
+- apt-get install build-essential git bison flex libxml2-dev libpcap-dev libtool libtool-bin rrdtool librrd-dev autoconf pkg-config automake autogen redis-server wget libsqlite3-dev libhiredis-dev libmaxminddb-dev libcurl4-openssl-dev libpango1.0-dev libcairo2-dev libnetfilter-queue-dev zlib1g-dev libssl-dev libcap-dev libnetfilter-conntrack-dev libreadline-dev libjson-c-dev
+
+On Debian 9 you need to do
+- apt-get install libpng-dev libzmq5-dev default-libmysqlclient-dev
+elsewhere
+- apt-get install libpng12-dev libmysqlclient-dev libzmq3-dev
+
+On Ubuntu16/18 you also need to do "apt-get install libtool-bin"
+
+You can decide to use MariaDB (instead of MySQL) do "apt-get install libmariadb-client-lgpl-dev" instead.
+
+On Debian/Ubuntu if you plan to build packages you should also install
+- apt-get install debhelper dpkg-sig dkms
+
+On Fedora/CentOS
+- yum groupinstall "Development tools"
+- yum install git autoconf automake autogen bison flex libpcap-devel libmaxminddb-devel hiredis-devel redis glib2-devel libxml2-devel sqlite-devel gcc-c++ libtool wget libcurl-devel pango-devel cairo-devel libpng-devel mysql-devel libnetfilter_queue-devel zlib-devel which libcap-devel readline-devel zeromq-devel
+
+On MacOSX (using http://brew.sh)
+brew install redis hiredis autoconf automake libtool rrdtool wget pkg-config git mysql
+
+On MacOSX (using mac ports)
+port install redis hiredis autoconf automake libtool rrdtool wget pkgconfig git
+
+On FreeBSD
+See README.FreeBSD
+
+On Windows you can download the redis server from
+- https://github.com/rgl/redis/downloads
+
+Note that you can use zmq 4.x in addition to 3.x (but not 2.x)
+
+Source Code Compilation
+-----------------------
+Once you have installed all the prerequisites do
+
+# cd <compilation directory>
+# git clone https://github.com/ntop/nDPI.git
+# cd nDPI; ./autogen.sh; ./configure; make; cd ..
+# git clone https://github.com/ntop/ntopng.git
+# cd ntopng
+# ./autogen.sh
+# ./configure
+# make
+
+
+Binary Packages
+---------------
+- Debian/CentOS/Windows   http://packages.ntop.org
+- OSX
+			http://sourceforge.net/projects/ntop/files/ntopng/
+			Homebrew
+			# brew update
+			# brew install ntopng
+

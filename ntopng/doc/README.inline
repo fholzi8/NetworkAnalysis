@@ -1,0 +1,14 @@
+Using ntopng Inline
+-------------------
+Traditionally ntopng has been used to passively monitor traffic. However
+ntopng can be used inline to block/shape traffic according to various
+criteria such as host and application protocol. In past versions the
+inline capabilities were implemented into ntopng on a sub-optimal way
+and thus we have rewritten everything from scratch to address feedback
+we received from out users.
+
+If you need to use ntopng inline (i.e. to act as a bump-in-the-wire) to
+block/allow traffic, please refer to the ntopng Edge (nEdge). Existing
+ntopng (version <= 3.4.x) users, please refer to the document below
+for migrating free of charge their existing licenses
+https://www.ntop.org/support/faq/migration-of-ntopng-inline-pro-enterprises-licenses-to-ntopng-edge-nedge/

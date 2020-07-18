@@ -1,0 +1,64 @@
+Introduction
+------------
+
+Logstash is a data collection engine that implements a data processing pipeline for ElasticSearch.
+
+How To Enable It
+----------------
+In order to enable this feature you need to start ntopng with the -F.
+
+Example: 
+$ ntopng -F "logstash;localhost;tcp;5510"
+
+Syntax:
+logstash;<host>;<protocol>;<port_number>
+
+Using It
+--------
+Enabling this option will cause ntopng dump flow information in Logstash so that 
+the data can be enriched before it gets indexed in ElasticSearch.
+
+Once started, ntopng will push to LS flows that are expired or periodically send 
+(every 5 mins) partial flows for long lasting flows.
+
+Logstash configuration example : 
+
+input {
+   tcp {
+      host => "localhost"
+      port => 5510
+      codec => json
+      type => "ntopng-ls"
+   }
+}
+
+filter {
+   if [type] == "ntopng-ls" {
+     date {
+                match => ["ntop_timestamp" , "yyyy-MM-dd'T'HH:mm:ss.SSSZ"]
+                target => "@timestamp"
+     }
+     # Clear redundant field value
+     mutate { 
+        remove_field => ["ntop_timestamp"] 
+     }
+     if "" not in [IPV4_SRC_ADDR] and "" not in [IPV6_SRC_ADDR] {
+        drop {}
+     }
+     ...
+   }
+}
+
+output {
+   if [type] == "ntopng-ls" {
+     ...
+   }
+}
+
+
+Future Work
+-----------
+In the future we plan:
+
+- Extend the input plugin list that can be used in communication between ntopng 
+  and logstash 
